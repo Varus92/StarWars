@@ -35,17 +35,17 @@ class MainActivity : AppCompatActivity() {
         val repository = StarWarsRepositoryImpl()
         val viewModelFactory = StarWarsDataSource(repository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-       viewModel.getStar()
+        viewModel.getStar()
         viewModel.myResponse.observe(this, Observer { response ->
 
             if (response.isSuccessful) {
                 binding.button.setOnClickListener {
-                   setContentView(R.layout.fragment_list_page)
+                    setContentView(R.layout.fragment_list_page)
+
                 }
-                response.body()?.let { Log.d("Response", it.name) }
-                Log.d("Response", response.body()?.height.toString())
-                Log.d("Response", response.body()?.gender.toString())
-                Log.d("Response", response.body()?.eye_color.toString())
+                response.body()?.let { Log.d("Response", it.results[1].name) }
+                Log.d("Response", response.body()?.results.toString())
+
 
             } else {
                 Log.d("Response", response.errorBody().toString())
@@ -53,14 +53,6 @@ class MainActivity : AppCompatActivity() {
 
             }
 
-
-            /*
-            se non andiamo ad inserire il Response come valore di ritorno
-            e controlliamo se i valori inseriti.
-            Log.d("Response", response.name)
-            Log.d("Response", response.height.toString())
-            Log.d("Response", response.gender)
-            Log.d("Response", response.eye_color)*/
         })
 
 

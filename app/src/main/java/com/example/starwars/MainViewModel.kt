@@ -4,14 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.starwars.data.StarWarsRepository
-import com.example.starwars.model.StarWars
+import com.example.starwars.model.ListaPersonaggi
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 
 class MainViewModel(private val repository: StarWarsRepository) : ViewModel() {
 
-    var myResponse: MutableLiveData<Response<StarWars>> = MutableLiveData()
+    var myResponse: MutableLiveData<Response<ListaPersonaggi>> = MutableLiveData()
 
     fun getStar() {
         viewModelScope.launch {

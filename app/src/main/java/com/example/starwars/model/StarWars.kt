@@ -1,6 +1,12 @@
 package com.example.starwars.model
 
 
+data class ListaPersonaggi(
+    val count: Int,
+    val results: List<StarWars>
+)
+
+
 //definizione della data class
 data class StarWars(
     // @SerializedName("name")  se si vuol inserire un nome diverso nella classe rispetto al valore JSON
@@ -12,5 +18,4 @@ data class StarWars(
     val eye_color: String,
     val birth_year: String,
     val gender: String
-
 )

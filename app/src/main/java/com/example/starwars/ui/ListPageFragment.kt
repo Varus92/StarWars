@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.starwars.MainViewModel
 import com.example.starwars.data.StarWarsRepositoryImpl
 import com.example.starwars.databinding.FragmentListPageBinding
+import com.example.starwars.model.StarWars
 import com.example.starwars.util.Adapters
 import com.example.starwars.util.StarWarsDataSource
 
@@ -22,10 +23,12 @@ class ListPageFragment : Fragment() {
     private var _binding : FragmentListPageBinding? = null
     private val binding get() = _binding!!
 
+    private var adapter = Adapters(listOf())
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentListPageBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -33,7 +36,10 @@ class ListPageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecycler()
+        binding.recycleviewFrag.layoutManager = LinearLayoutManager(context)
+        binding.recycleviewFrag.adapter = adapter
+
+        //setupRecycler()
     }
 
     fun setupRecycler(){
@@ -44,33 +50,10 @@ class ListPageFragment : Fragment() {
         viewModel.myResponse.observe(this, Observer { response ->
 
             if (response.isSuccessful) {
-               response.body()?.let { Log.d("Response", it.results[1].name) }
-
-                //binding.recycleviewFrag.adapter = response.body()?.results?.let {Adapters(it) }
-
-                binding.recycleviewFrag.apply {
-                    // set a LinearLayoutManager to handle Android
-                    // RecyclerView behavior
-                    layoutManager = LinearLayoutManager(activity)
-                    // set the custom adapter to the RecyclerView
-                    adapter = response.body()?.let { Adapters(it.results) }
-                }
-
-              /*      // Lookup the recyclerview in activity layout
-                val rvContacts = binding.recycleviewFrag as RecyclerView
-
-                // Create adapter passing in the sample user data
-                val adapter = response.body()?.let { Adapters(it.results) }
-                // Attach the adapter to the recyclerview to populate items
-                rvContacts.adapter = adapter
-                // Set layout manager to position the items
-                rvContacts.layoutManager = LinearLayoutManager(context)
-                // That's all!*/
-
-
+                adapter = Adapters(response.body()?.results ?: listOf())
+                binding.recycleviewFrag.adapter = adapter
             } else {
                 Log.d("Response", response.errorBody().toString())
-
             }
 
 

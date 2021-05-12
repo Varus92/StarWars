@@ -28,7 +28,8 @@ class MainActivity : AppCompatActivity() {
         val imageView: ImageView = binding.imageView as ImageView
 
         Glide.with(this)
-            .load("https://1000marche.net/wp-content/uploads/2020/03/Star-Wars-logo.png")  //inseriamo dentro la funzione URL dell immagine che vogliamo visualizzare
+            .load("https://1000marche.net/wp-content/uploads/2020/03/Star-Wars-logo.png")
+            //inseriamo dentro la funzione URL dell immagine che vogliamo visualizzare
             .into(imageView) // dentro ImageView presente dentro il file XML
 
 

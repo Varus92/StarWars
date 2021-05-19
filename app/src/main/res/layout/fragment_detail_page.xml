@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.fragment_detail_page">
+
+
+    <TextView
+        android:layout_marginTop="40dp"
+        android:id="@+id/text_title_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Personaggio scelto"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#FF9800"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/nome_detail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/nome_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="nome"
+        android:textColor="#E91E63"
+        app:layout_constraintBottom_toTopOf="@+id/altezza_detail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_title_detail" />
+
+    <TextView
+        android:id="@+id/altezza_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="altezza"
+        android:textColor="#E91E63"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/data_detail"
+        app:layout_constraintTop_toBottomOf="@+id/nome_detail" />
+
+    <TextView
+        android:id="@+id/data_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="data"
+        android:textColor="#E91E63"
+        app:layout_constraintBottom_toTopOf="@+id/buttonBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/altezza_detail" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        app:layout_constraintTop_toBottomOf="@id/data_detail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_marginBottom="40dp"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

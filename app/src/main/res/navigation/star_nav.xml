@@ -2,11 +2,57 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/star_nav">
+    android:id="@+id/star_nav"
+    app:startDestination="@id/fragmentHome">
+
+    <fragment
+        android:id="@+id/fragmentHome"
+        android:name="com.example.starwars.ui.FragmentHome"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_fragmentHome_to_listPageFragment"
+            app:destination="@id/listPageFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/listPageFragment"
         android:name="com.example.starwars.ui.ListPageFragment"
         android:label="fragment_list_page"
-        tools:layout="@layout/fragment_list_page" />
+        tools:layout="@layout/fragment_list_page" >
+
+        <action
+            android:id="@+id/action_listPageFragment_to_fragment_detail_page"
+            app:destination="@id/fragment_detail_page"
+            app:enterAnim="@android:anim/fade_in">
+
+        </action>
+
+    </fragment>
+
+    <dialog
+        android:id="@+id/fragment_detail_page"
+        android:name="com.example.starwars.ui.fragment_detail_page"
+        android:label="fragment_detail_page"
+        tools:layout="@layout/fragment_detail_page" >
+        <action
+            android:id="@+id/action_fragment_detail_page_to_listPageFragment"
+            app:destination="@id/listPageFragment"
+            app:enterAnim="@android:anim/fade_out" />
+        <!-- inserire tutti gli argomenti che vuoi far passare da un frag al next
+         e Importante stare attento al Name che se non inserito uguale non passa il dato-->
+        <argument
+            android:name="url"
+            app:argType="string" />
+        <argument
+            android:name="nome"
+            app:argType="string" />
+        <argument
+            android:name="altezza"
+            app:argType="integer" />
+        <argument
+            android:name="data"
+            app:argType="string" />
+    </dialog>
+
 </navigation>

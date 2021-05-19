@@ -17,5 +17,6 @@ data class StarWars(
     val skin_color: String,
     val eye_color: String,
     val birth_year: String,
-    val gender: String
+    val gender: String,
+    val url: String
 )

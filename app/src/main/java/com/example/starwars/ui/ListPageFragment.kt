@@ -1,35 +1,43 @@
 package com.example.starwars.ui
 
+import android.R
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.starwars.MainViewModel
-import com.example.starwars.data.StarWarsRepositoryImpl
 import com.example.starwars.databinding.FragmentListPageBinding
 import com.example.starwars.model.StarWars
 import com.example.starwars.util.Adapters
-import com.example.starwars.util.StarWarsDataSource
+import com.google.android.material.transition.MaterialContainerTransform
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class ListPageFragment : Fragment() {
 
-    private lateinit var viewModel: MainViewModel
+@AndroidEntryPoint
+class ListPageFragment @Inject constructor(): Fragment() {
+
+    private val viewModel: MainViewModel by viewModels()
 
     private var _binding : FragmentListPageBinding? = null
     private val binding get() = _binding!!
 
+    //creo l'adapter iniziale di elementi null, cosi da crearmi il layout e non darmi errore poiche non riesce a crearmi la recycleview
     private var adapter = Adapters(listOf())
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentListPageBinding.inflate(inflater, container, false)
+        sharedElementEnterTransition = MaterialContainerTransform()
+
         return binding.root
     }
 
@@ -39,21 +47,40 @@ class ListPageFragment : Fragment() {
         binding.recycleviewFrag.layoutManager = LinearLayoutManager(context)
         binding.recycleviewFrag.adapter = adapter
 
-        //setupRecycler()
+        setupRecycler()
+
+
+
     }
+    private fun setupRecycler(){
+        viewModel.getStar().observe(viewLifecycleOwner) { response ->
+            adapter = Adapters(response?.results ?: listOf())
+            binding.recycleviewFrag.adapter = adapter
 
-    fun setupRecycler(){
-        val repository = StarWarsRepositoryImpl()
-        val viewModelFactory = StarWarsDataSource(repository)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-        viewModel.getStar()
-        viewModel.myResponse.observe(this, Observer { response ->
 
-            if (response.isSuccessful) {
-                adapter = Adapters(response.body()?.results ?: listOf())
-                binding.recycleviewFrag.adapter = adapter
-            } else {
-                Log.d("Response", response.errorBody().toString())
+            response.results[1].let { Log.d("ciao", it.url) }
+            //richiamo l interface e assegno una classe anonima ( e' una classe che non ha un nome) il quale richiamo l Adapter
+            //e faccio l'override della funzione che abbiamo definito precedentemente dove impostiamo che quando vado a cliccare sul bottone
+            //richiamiamo la funzione findNavController che ci permette di passare nel next fragment
+            adapter.personListener = object : Adapters.OnClickPersonListener {
+                override fun onClickPerson(personStarWars: StarWars) {
+
+                    //se nel navigation noi impostiamo che quando passiamo da un frag a un frag possiamo passare un argument che ci servira nel next frag
+                    //che puo essere di qualsiasi tipo si voglia.
+                    // Possiamo inoltre utilizzare il Direction anziche il IDRes e inserire successivamente il valore da voler passare al frag successivo
+                    findNavController()
+                        .navigate(
+                            ListPageFragmentDirections
+                                .actionListPageFragmentToFragmentDetailPage(
+                                    personStarWars.url,
+                                    personStarWars.name,
+                                    personStarWars.height,
+                                    personStarWars.birth_year
+                                )
+                        )
+                }
+
+
             }
 
 
@@ -64,7 +91,12 @@ class ListPageFragment : Fragment() {
             Log.d("Response", response.height.toString())
             Log.d("Response", response.gender)
             Log.d("Response", response.eye_color)*/
+        }
 
-            })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
